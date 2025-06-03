@@ -6,13 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-// Si este modelo fuera a ser usado para autenticación:
-// use Illuminate\Foundation\Auth\User as Authenticatable;
-// use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class UsuarioSistema extends Model // Cambiar a Authenticatable si es para auth
+class UsuarioSistema extends Authenticatable
 {
-    use HasFactory; // Añadir Notifiable si es para auth
+    use HasFactory, Notifiable;
 
     /**
      * The table associated with the model.
@@ -43,7 +42,7 @@ class UsuarioSistema extends Model // Cambiar a Authenticatable si es para auth
      */
     protected $hidden = [
         'password',
-        // 'remember_token', // Si se usa autenticación de Laravel
+        'remember_token',
     ];
 
     /**

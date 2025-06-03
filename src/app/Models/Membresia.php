@@ -11,6 +11,12 @@ class Membresia extends Model
 {
     use HasFactory;
 
+    const ESTADO_ACTIVA = 'Activa';
+    const ESTADO_PENDIENTE = 'Pendiente';
+    const ESTADO_VENCIDA = 'Vencida';
+    const ESTADO_CANCELADA = 'Cancelada';
+    // Considerar añadir 'Congelada' o 'Pausada' si es necesario en el futuro
+
     /**
      * The table associated with the model.
      *
@@ -70,5 +76,31 @@ class Membresia extends Model
     public function facturas(): HasMany
     {
         return $this->hasMany(Factura::class, 'membresia_id');
+    }
+
+    /**
+     * Scope a query to only include active memberships.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeActivas($query)
+    {
+        return $query->where('estado', self::ESTADO_ACTIVA)
+                     ->where('fecha_inicio', '<=', now())
+                     ->where('fecha_fin', '>=', now());
+    }
+
+    /**
+     * Check if the membership is currently active.
+     * (Este es un accesor, no un scope, pero útil)
+     *
+     * @return bool
+     */
+    public function getEsActivaAttribute(): bool
+    {
+        return $this->estado === self::ESTADO_ACTIVA &&
+               $this->fecha_inicio <= now() &&
+               $this->fecha_fin >= now();
     }
 }

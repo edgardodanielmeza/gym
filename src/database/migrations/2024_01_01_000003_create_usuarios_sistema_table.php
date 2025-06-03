@@ -32,6 +32,7 @@ return new class extends Migration
             $table->string('nombre_completo', 100); // VARCHAR(100) NOT NULL
             $table->string('email', 100)->unique('uk_usuarios_sistema_email'); // VARCHAR(100) NOT NULL, UNIQUE KEY
             $table->string('password', 255); // VARCHAR(255) NOT NULL (nombre cambiado de password_hash)
+            $table->rememberToken();
             $table->boolean('activo')->default(true); // BOOLEAN NOT NULL DEFAULT TRUE
 
             $table->timestamp('created_at')->useCurrent(); // TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
